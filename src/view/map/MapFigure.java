@@ -2,11 +2,9 @@ package view.map;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.util.Observable;
-import java.util.Observer;
-import javax.swing.SwingUtilities;
 
 import util.Vector2D;
+import view.Figure;
 
 /**
  * The class for figures in the game view.
@@ -17,45 +15,29 @@ import util.Vector2D;
  * @version 2016-03-04
  */
 
+@SuppressWarnings("serial")
 public class MapFigure 
-implements Observer
+extends Figure
 {
 
-	protected double size;
-	protected Vector2D position;
 	protected Color color = new Color(255,0,0);
 	
 	//Extra buffer when determining bounds
-	protected int extra=1;
-	
-	//Needed to repaint the containing panel and to delete itself
-	protected MapView parent;
-	
+	protected int extra=1;	
 	
 	/**
 	 * Constructor that takes a position (x,y) and a size and generates a GameFigure.
-	 *
-	 * @param parent	The containing GameView
-	 * @param position	The position vector.
-	 * @param size		The size of the GameFigure.S
+	 * @param position	The initial position
+	 * @param size		The size of the Figure
+	 * @param parent	The containing MapView
 	 * @param color		The color.
 	 */
     public MapFigure(MapView parent, Vector2D position, double size, Color color)
     {
-    	this.parent = parent;
-        this.position = position;
-        this.size=size;
+    	super(parent, position, size);
         this.color = color;
     }
 	
-    
-    /**
-     * Set a new size for the figure
-     * @param new_size	The new size
-     */
-    private void resize (double new_size) {
-    	size = new_size;
-	}
     
     /**
      * Returns the color of itself to be used in the map.
@@ -82,38 +64,6 @@ implements Observer
     	g.drawLine((int)position.getX(), (int)position.getY(), (int)position.getX(), (int)position.getY());
     }
     
-    
-    /**
-     * Used when an update has happened. Can handle new positions and if the object died.
-     * @param who		The observable that was updated
-     * @param what		What that was updated, either a Vector2D if it is a new position or a String containing "Died" if it died.
-     */
-	@Override //Movement (or something)
-	public void update(Observable who, Object what) {
-		
-		if (what instanceof Vector2D) {
-			position = (Vector2D) what;
-		}
-		
-		if (what instanceof String) {
-			if (((String)what).equals("Died"))
-			{
-				final MapFigure reference = this;
-				SwingUtilities.invokeLater(new Runnable() {
-				    public void run() { parent.removeMe(reference); }	    
-				});
-			}
-		}
-	}
-	
-	
-	/**
-	 * Moves the figure to a new position
-	 * @param position	The new position
-	 */
-	private void setPosition (Vector2D position) {
-		this.position = position;
-	}
 	
 	/**
 	 * Returns the x-coordinate

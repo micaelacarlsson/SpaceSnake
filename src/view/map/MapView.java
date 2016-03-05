@@ -13,14 +13,12 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
-import java.util.Observable;
 
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
 
 import model.Floater;
-import model.WorldCollection;
 import model.WorldObject;
 import model.objects.BlackHole;
 import model.objects.Edible;
@@ -29,8 +27,8 @@ import model.objects.SnakeTail;
 
 import util.Config;
 import util.Parser;
-import view.GameComponent;
-import view.GameObserver;
+import view.Figure;
+import view.WorldView;
 
 /**
  * This is a class that just contains the game itself
@@ -45,13 +43,10 @@ import view.GameObserver;
 
 @SuppressWarnings("serial")
 public class MapView 
-extends GameComponent 
-implements MouseListener, GameObserver, ActionListener
+extends WorldView
+implements MouseListener, ActionListener
 {
 
-	//The world size
-	int worldSize=800;
-	
 	// Determines the zoom level
 	protected float mapSize = 1;
 	private int margin = 5;
@@ -171,31 +166,6 @@ implements MouseListener, GameObserver, ActionListener
 	
 	
 	/**
-	 * Update function run by the observable (through notifyobservers).
-	 * @param who	the observable that was updated
-	 * @param what	what was updated. If it is an WorldObject that object is added to the view
-	 */
-	@Override
-	public void update(Observable who, Object what) {
-		if (what instanceof WorldObject) {
-			addItem((WorldObject) what);
-		}
-	}
-	
-	
-	/**
-	 * Adds a complete world to the view (including all objects and constants).
-	 * @param world		The WorldCollection from which all items and constants is added to the view.
-	 */
-	public void addWorld (WorldCollection world) {
-		for (WorldObject thing : world.getCollection()) {
-			addItem(thing);
-		}
-		worldSize=(int)world.getWorldSize();
-	}
-	
-	
-	/**
 	 * Removes everything from the view. Equal to restart the view.
 	 */
 	public void clear() {
@@ -207,7 +177,8 @@ implements MouseListener, GameObserver, ActionListener
 	 * Adds some item to the world
 	 * @param what	The item to add
 	 */
-	private void addItem (WorldObject what) {
+	@Override
+	protected void addItem (WorldObject what) {
 		final MapFigure figure;
 		if (what instanceof Floater) {
 			figure = new MapFigure(this, what.getPosition(), what.getRadius()*2, new Color(0,0,155));
@@ -233,8 +204,9 @@ implements MouseListener, GameObserver, ActionListener
 	 * Remove some item from the world. Called from the items themselves.
 	 * @param who	The item to remove
 	 */
-	public void removeMe(MapFigure who) {
-		theList.remove(who);
+	@Override
+	public void removeMe(Figure who) {
+		theList.remove((MapFigure)who);
 	}
 
 

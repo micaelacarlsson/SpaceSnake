@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 /**
  * Internal class making commands sent through events more readable and makes sure that they are unique.
  * @author Gustav
+ * @version 2016-03-05
  */
 
 

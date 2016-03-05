@@ -19,6 +19,7 @@ import javax.swing.KeyStroke;
 import util.GameEvent;
 import util.Config;
 import util.FillAllLayout;
+import util.Parser;
 
 
 
@@ -89,16 +90,17 @@ implements WindowListener
 		theWindow.setPreferredSize(new Dimension(
 				Integer.parseInt(Config.get("Window_width")), 
 				Integer.parseInt(Config.get("Window_height"))));
-		
+
 		theWindow.pack();
-        
+		
 		//Always place the window 1/3 from the top left corner
 		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
         theWindow.setLocation(d.width/3 - theWindow.getWidth()/3, d.height/3 - theWindow.getHeight()/3);
         
         theWindow.setVisible(true);
 		theWindow.addWindowListener(this);
-                
+		
+        theWindow.getContentPane().setBackground(Parser.ColorFromString(Config.get("Background_color")));
         theWindow.getContentPane().add(theContent);
         theContent.setLayout(new FillAllLayout());    
 	}
@@ -115,7 +117,7 @@ implements WindowListener
 		InputMap inputMap  = ((JComponent)theWindow.getContentPane()).getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
 	    ActionMap actionMap = ((JComponent)theWindow.getContentPane()).getActionMap();
 	    
-	    inputMap.put(KeyStroke.getKeyStroke(key, 0), code); //KeyEvent.VK_ESCAPE
+	    inputMap.put(KeyStroke.getKeyStroke(key, 0), code);
 	    actionMap.put(code, new AbstractAction() {
 	        @Override
 	        public void actionPerformed(ActionEvent e) {
@@ -145,6 +147,7 @@ implements WindowListener
 	 */
 	private void pack()
 	{
+		theWindow.setPreferredSize(theWindow.getSize());
 		theWindow.pack();
 	}
 	

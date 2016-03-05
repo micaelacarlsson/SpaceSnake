@@ -1,12 +1,10 @@
 /bin
+
 .project
 .classpath
 
 *~
 
-*.html
-*.css
 *.js
-*.uxf
+*.rar
 
-doc/package-list

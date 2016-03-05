@@ -25,7 +25,6 @@ public class PhysicsEngine extends Thread
     private boolean setPaused;
     private double gameSpeed;
     private Vector2D mouseDir = new Vector2D (0,0);
-    private double mouseAccPower = 1;
     
     /**
      * Constructor that sets the in-game physics
@@ -44,7 +43,7 @@ public class PhysicsEngine extends Thread
      * @param acc	The force applied
      */
     public void SnakePull(Vector2D acc){
-    		mouseDir = acc.scale(mouseAccPower);
+    		mouseDir = acc;
     }
     
     /**
@@ -66,7 +65,8 @@ public class PhysicsEngine extends Thread
                 break;
             }
            
-            ArrayList<WorldObject> collection = (ArrayList<WorldObject>) world.getCollection().clone();
+            @SuppressWarnings("unchecked")
+			ArrayList<WorldObject> collection = (ArrayList<WorldObject>) world.getCollection().clone();
     		
             for(WorldObject obj : collection){
             	if(obj instanceof IGravity ){

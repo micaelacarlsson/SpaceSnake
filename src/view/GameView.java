@@ -1,4 +1,5 @@
 package view;
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -11,20 +12,20 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
-import java.util.Observable;
 
 import javax.swing.SwingUtilities;
 
 
 import model.Floater;
-import model.WorldCollection;
 import model.WorldObject;
 import model.objects.BlackHole;
 import model.objects.Edible;
 import model.objects.SnakeHead;
 import model.objects.SnakeTail;
 
+import util.Config;
 import util.GameEvent;
+import util.Parser;
 import util.Vector2D;
 import view.figures.*;
 
@@ -41,21 +42,23 @@ import view.figures.*;
 
 @SuppressWarnings("serial")
 public class GameView 
-extends GameComponent 
-implements MouseWheelListener, MouseMotionListener, MouseListener, GameObserver, ActionListener
+extends WorldView 
+implements MouseWheelListener, MouseMotionListener, MouseListener, ActionListener
 {
 
-	//Temp variable until the proper world gets used
-	int worldSize=800;
-	
 	// Determines the zoom level
-	protected float zoom = 1;
+	protected double zoom = 0.1;
 	
 	//How much should the zoom change on zoom in/out
 	private double zoomstep = 1.01; 
 	
 	//The snake position
 	private Vector2D snakePosition=new Vector2D(0,0);
+	
+	//Colors of the world
+	private Color backgroundColor = new Color(200,200,200);
+	private Color borderColor = new Color(200,200,200);
+	private Color worldColor = new Color(200,200,200);
 	
 	/**
 	 * Constructor that generates the view.
@@ -95,6 +98,10 @@ implements MouseWheelListener, MouseMotionListener, MouseListener, GameObserver,
 	{
 		//Use coordinates for positioning
 		this.setLayout(null);
+		zoom = Double.parseDouble(Config.get("Startup_zoom"));
+		backgroundColor = Parser.ColorFromString(Config.get("Game_bg_color"));
+		borderColor = Parser.ColorFromString(Config.get("Game_border_color"));
+		worldColor = Parser.ColorFromString(Config.get("Game_world_color"));
 	}
 
 	
@@ -107,7 +114,8 @@ implements MouseWheelListener, MouseMotionListener, MouseListener, GameObserver,
 		
 		Graphics2D g2 =(Graphics2D)g;
         super.paintComponent(g2);
-        
+        g2.setBackground(backgroundColor);
+        g2.clearRect(0, 0, this.getWidth(), this.getHeight());
         //Set center to (0,0)
         g2.translate(this.getWidth()/2 - snakePosition.getX()*zoom, this.getHeight()/2 - snakePosition.getY()*zoom); 
         
@@ -118,10 +126,11 @@ implements MouseWheelListener, MouseMotionListener, MouseListener, GameObserver,
         g2.setRenderingHint(
     	        RenderingHints.KEY_ANTIALIASING,
     	        RenderingHints.VALUE_ANTIALIAS_ON);
-    	g2.setColor(Color.BLACK);
+    	g2.setColor(worldColor);
+        g2.fillOval(-worldSize/2, -worldSize/2, worldSize, worldSize);
+        g2.setStroke(new BasicStroke(5));
+        g2.setColor(borderColor);
         g2.drawOval(-worldSize/2-1, -worldSize/2-1, worldSize+2, worldSize+2);
-        g2.setColor(Color.BLACK);
-        g2.fillOval(-worldSize/2, -worldSize/2, worldSize, worldSize);  
     }
 	
 	
@@ -130,7 +139,7 @@ implements MouseWheelListener, MouseMotionListener, MouseListener, GameObserver,
 	 * @param amount	The amount to zoom. Logarithmic scale	
 	 * @return The zoom level after the zoom action
 	 */
-	public float zoom(int amount){
+	public double zoom(int amount){
 		zoom *= Math.pow(zoomstep, amount);
 		repaint();
 		return zoom;
@@ -187,50 +196,26 @@ implements MouseWheelListener, MouseMotionListener, MouseListener, GameObserver,
 		return (new Vector2D(point)).sub(new Vector2D(this.getWidth()/2,this.getHeight()/2)).div(zoom);
 	}
 	
-	/**
-	 * Adds a new world to the view including all objects and all constants.
-	 * @param world The WorldCollection from which all objects and constants is taken
-	 */
-	public void addWorld (WorldCollection world) {
-		for (WorldObject thing : world.getCollection()) {
-			addItem(thing);
-		}
-		worldSize=(int)world.getWorldSize();
-	}
-	
-	
-	/**
-	 * Update function run by the observable (through notifyobservers).
-	 * @param who	the observable that was updated
-	 * @param what	what was updated. If it is an WorldObject that object is added to the view
-	 */
-	@Override //Something happened in the world!!!
-	public void update(Observable who, Object what) {
-		//If it was a worldObject: add it.
-		if (what instanceof WorldObject) {
-			addItem((WorldObject) what);
-		}
-	}
-	
 	
 	/**
 	 * Adds some item to the world
 	 * @param what	The item to add
 	 */
-	private void addItem (WorldObject what) {
+	@Override
+	protected void addItem (WorldObject what) {
 		final GameFigure figure;
 		if (what instanceof Floater) {
-			figure = new FloaterView(what.getPosition().getX(), what.getPosition().getY(), what.getRadius()*2 ,this);
+			figure = new FloaterView(what.getPosition(), what.getRadius()*2 ,this);
 		} else if (what instanceof Edible) {
-			figure = new EdibleView(what.getPosition().getX(), what.getPosition().getY(), what.getRadius()*2 ,this);
+			figure = new EdibleView(what.getPosition(), what.getRadius()*2 ,this);
 		} else if (what instanceof BlackHole) {
-			figure = new BlackHoleView(what.getPosition().getX(), what.getPosition().getY(), what.getRadius()*2 ,this);
+			figure = new BlackHoleView(what.getPosition(), what.getRadius()*2 ,this);
 		} else if (what instanceof SnakeHead) {
-			figure = new SnakeHeadView(what.getPosition().getX(), what.getPosition().getY(), what.getRadius()*2 ,this);
+			figure = new SnakeHeadView(what.getPosition(), what.getRadius()*2 ,this);
 		} else if (what instanceof SnakeTail) {
-			figure = new SnakeTailView(what.getPosition().getX(), what.getPosition().getY(), what.getRadius()*2 ,this);
+			figure = new SnakeTailView(what.getPosition(), what.getRadius()*2 ,this);
 		} else {
-			figure = new GameFigure(what.getPosition().getX(), what.getPosition().getY(), what.getRadius()*2 ,this);
+			figure = new GameFigure(what.getPosition(), what.getRadius()*2 ,this);
 		}
 		SwingUtilities.invokeLater(new Runnable() {
 		    public void run() { addFigure(figure); }	    
@@ -252,8 +237,9 @@ implements MouseWheelListener, MouseMotionListener, MouseListener, GameObserver,
 	 * Remove some item from the world. Called from the items themselves.
 	 * @param who	The item to remove
 	 */
-	public void removeMe(GameFigure who) {
-		this.remove(who);
+	@Override
+	public void removeMe(Figure who) {
+		this.remove((GameFigure)who);
 	}
 	
 	/**

@@ -102,8 +102,8 @@ implements Serializable
 	
 	/**
 	 * Checks if a obj is the neighbor of this one.
-	 * @param obj
-	 * @return
+	 * @param obj the other part that gets checked
+	 * @return	true if it is just in front of or just behind
 	 */
 	protected boolean isNeighbor (WorldObject obj) {
 		if (obj instanceof SnakePart)

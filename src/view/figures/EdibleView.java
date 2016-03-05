@@ -18,16 +18,6 @@ import view.GameView;
 public class EdibleView 
 extends GameFigure {
 
-	/**
-	 * Constructor that creates the figure.
-	 * @param x			The initial x-coordinate
-	 * @param y			The initial y-coordinate
-	 * @param size		The initial size (the diameter)
-	 * @param parent	The containing GameView in which it is located
-	 */
-	public EdibleView(double x, double y, double size, GameView parent){
-		super(x, y, size, parent);
-	}
 
 	/**
 	 * Constructor that creates the figure.
@@ -36,7 +26,7 @@ extends GameFigure {
 	 * @param parent	The containing GameView in which it is located
 	 */
 	public EdibleView(Vector2D position, double size, GameView parent){
-		super(position.getX(), position.getY(), size, parent);
+		super(position, size, parent);
 	}
 
 	/**

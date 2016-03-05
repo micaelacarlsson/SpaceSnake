@@ -66,7 +66,7 @@ extends JButton
 	
 	/**
 	 * Paints the button
-	 * @param g		the graphics object that is used
+	 * @param g_in		the graphics object that is used
 	 */
 	@Override
 	public void paintComponent(Graphics g_in) {
@@ -112,7 +112,7 @@ extends JButton
 	
 	/**
 	 * returns the preferred size of the button. It is calculated based on how much space the text occupies.
-	 * @param c the new background color
+	 * @return The preferred size
 	 */
 	@Override
 	public Dimension getPreferredSize() {

@@ -222,16 +222,16 @@ public class MainController implements ActionListener {
 			}
 		}
 		if (e.getActionCommand().equals(GameEvent.UP_PRESSED)) {
-			gameController.accelerate(new Vector2D(0,-100));
+			gameController.accelerate(new Vector2D(0,-1));
 		}
 		if (e.getActionCommand().equals(GameEvent.DOWN_PRESSED)) {
-			gameController.accelerate(new Vector2D(0,100));
+			gameController.accelerate(new Vector2D(0,1));
 		}
 		if (e.getActionCommand().equals(GameEvent.RIGHT_PRESSED)) {
-			gameController.accelerate(new Vector2D(100,0));
+			gameController.accelerate(new Vector2D(1,0));
 		}
 		if (e.getActionCommand().equals(GameEvent.LEFT_PRESSED)) {
-			gameController.accelerate(new Vector2D(-100,0));
+			gameController.accelerate(new Vector2D(-1,0));
 		}
 		if (e.getActionCommand() == GameEvent.WINDOW_CLOSED) {
 			exit();

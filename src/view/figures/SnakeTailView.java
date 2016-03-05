@@ -8,6 +8,7 @@ import java.awt.RadialGradientPaint;
 import java.awt.RenderingHints;
 import java.awt.geom.Point2D;
 
+import util.Vector2D;
 import view.GameView;
 
 /**
@@ -22,13 +23,12 @@ extends GameFigure {
 
 	/**
 	 * Constructor that creates the figure.
-	 * @param x			The initial x-coordinate
-	 * @param y			The initial y-coordinate
-	 * @param size		The initial size (the diameter)
-	 * @param parent	The containing GameView in which it is located
+	 * @param position	The initial position
+	 * @param size		The size of the GameFigure
+	 * @param parent	The containing GameView
 	 */
-	public SnakeTailView(double x, double y, double size, GameView parent){
-		super(x, y, size, parent);
+	public SnakeTailView(Vector2D position, double size, GameView parent){
+		super(position, size, parent);
 	}
 
 	/**

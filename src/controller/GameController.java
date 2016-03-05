@@ -33,6 +33,8 @@ implements ActionListener, Observer
 	private MainController parent;
 
 	private static final long gameSpeed = 50;
+	private double mousePower = 20;
+	private double keyPower = 20;
 	
 	/**
 	 * Constructor that adds a reference to the parent controller
@@ -40,6 +42,8 @@ implements ActionListener, Observer
 	 */
 	public GameController(MainController parent){
 		this.parent = parent;
+		mousePower = Double.parseDouble(Config.get("Mouse_acc_power"));
+		keyPower = Double.parseDouble(Config.get("Key_acc_power"));
 	}
 	
 	/**
@@ -117,19 +121,19 @@ implements ActionListener, Observer
 	public void actionPerformed(ActionEvent e_in) {
 		GameEvent e = (GameEvent) e_in;
 		if (e.getActionCommand() == GameEvent.MOUSE_PRESSED) {
-			physicsEngine.SnakePull(e.getVector().div(20));
+			physicsEngine.SnakePull(e.getVector().div(200).scale(mousePower));
 			//Maybe should set something in the physicsengine that released unsets?
 		}
 		else if (e.getActionCommand() == GameEvent.MOUSE_RELEASED) {
 			physicsEngine.SnakePull(new Vector2D (0,0));
 		}
 		else if (e.getActionCommand() == GameEvent.MOUSE_DRAGGED) {
-			physicsEngine.SnakePull(e.getVector().div(20));
+			physicsEngine.SnakePull(e.getVector().div(200).scale(mousePower));
 		}
 	}
 	
 	public void accelerate(Vector2D	acc) {
-		physicsEngine.SnakePull(acc);
+		physicsEngine.SnakePull(acc.scale(keyPower));
 	}
 
 	/**
