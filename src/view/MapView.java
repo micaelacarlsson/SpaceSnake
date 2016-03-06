@@ -1,4 +1,4 @@
-package view.map;
+package view;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -27,8 +27,8 @@ import model.objects.SnakeTail;
 
 import util.Config;
 import util.Parser;
-import view.Figure;
-import view.WorldView;
+import view.figures.Figure;
+import view.figures.MapFigure;
 
 /**
  * This is a class that just contains the game itself

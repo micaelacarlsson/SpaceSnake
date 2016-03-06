@@ -21,8 +21,6 @@ import util.Config;
 import util.FillAllLayout;
 import util.Parser;
 
-
-
 /**
  * This is a class that just contains the MainWindow in one JFrame
  * 
@@ -108,6 +106,8 @@ implements WindowListener
 
 	/**
 	 * Adds KeyStrokeEvents and sends ActionEvents to the ActionListeners.
+	 * @param key			The key to listen to
+	 * @param theCommand	A String that gets sent as a command when the key is pressed
 	 */
 	public void addKeyListener (int key, String theCommand) {
 		
@@ -163,22 +163,25 @@ implements WindowListener
 	}
 
 
-	//WindowEvents:
-	@Override
-	public void windowActivated(WindowEvent e) {}
-	@Override
-	public void windowClosed(WindowEvent e) {}
+	////////////////////////
+	//    WindowEvents    //
+	////////////////////////
+	/** Do nothing. */
+	@Override public void windowActivated(WindowEvent e) {}
+	/** Do nothing. */
+	@Override public void windowClosed(WindowEvent e) {}
+	/** Sends an GameEvent when the window is closed. */
 	@Override
 	public void windowClosing(WindowEvent e) {
 		fireEvent(new GameEvent(this, GameEvent.WINDOW_CLOSED));
 	}
-	@Override
-	public void windowDeactivated(WindowEvent e) {}
-	@Override
-	public void windowDeiconified(WindowEvent e) {}
-	@Override
-	public void windowIconified(WindowEvent e) {}
-	@Override
-	public void windowOpened(WindowEvent e) {}
+	/** Do nothing. */
+	@Override public void windowDeactivated(WindowEvent e) {}
+	/** Do nothing. */
+	@Override public void windowDeiconified(WindowEvent e) {}
+	/** Do nothing. */
+	@Override public void windowIconified(WindowEvent e) {}
+	/** Do nothing. */
+	@Override public void windowOpened(WindowEvent e) {}
 	
 }

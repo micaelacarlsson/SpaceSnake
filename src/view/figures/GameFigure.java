@@ -7,7 +7,6 @@ import java.awt.RenderingHints;
 import java.awt.geom.Rectangle2D;
 
 import util.Vector2D;
-import view.Figure;
 import view.GameView;
 
 /**

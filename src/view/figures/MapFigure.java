@@ -1,10 +1,10 @@
-package view.map;
+package view.figures;
 
 import java.awt.Color;
 import java.awt.Graphics;
 
 import util.Vector2D;
-import view.Figure;
+import view.MapView;
 
 /**
  * The class for figures in the game view.

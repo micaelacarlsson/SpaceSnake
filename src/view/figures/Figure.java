@@ -1,4 +1,4 @@
-package view;
+package view.figures;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -7,6 +7,7 @@ import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 
 import util.Vector2D;
+import view.WorldView;
 
 /**
  * Main class for figures
@@ -46,7 +47,7 @@ implements Observer
      * @param what		What that was updated, either a Vector2D if it is a new position, a Double if it is a new size
      * 					or a String containing "Died" if it died.
      */
-	@Override //Movement (or something)
+	@Override
 	public void update(Observable who, Object what) {
 		
 		//If it was a vector: move there.

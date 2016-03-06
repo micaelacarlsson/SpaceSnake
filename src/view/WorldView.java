@@ -2,6 +2,8 @@ package view;
 
 import java.util.Observable;
 
+import view.figures.Figure;
+
 import model.WorldCollection;
 import model.WorldObject;
 
